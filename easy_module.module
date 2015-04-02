@@ -11,6 +11,26 @@
  * @return Assoc
  *   permission items.
  */
+function easy_module_permission() {
+  return array(
+    'administer easy_module' => array(
+      'title' => t('User easy module"'),
+      'description' => t('Administer the "Easy Module" module.'),
+    ),
+    'create module easy_module' => array(
+      'title' => t('Display User info'),
+      'description' => t('Create the skeleton for a module using the "Easy Module" module.'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_block_info().
+ *
+ * @return Assoc
+ *   the blocks' info.
+ */
+
 function easy_module_user($type, &$edit, &$user, $category = NULL) {
   switch ($type) {
     case 'view':
@@ -22,6 +42,35 @@ function easy_module_user($type, &$edit, &$user, $category = NULL) {
       return array(t('History') => $items);
       break;
 }
+  return $block;
+}
+
+function easy_module_block_info() {
+  $block = array();
+  $block['easy_module_generator'] = array(
+    'info' => t('Easy Module Generator'),
+  );
+  return $block;
+}
+
+/**
+ * Implements hook_block_view().
+ *
+ * @param String $delta
+ *   the identifier of the requested block.
+ *
+ * @return Assoc
+ *   the requested block's view.
+ */
+function easy_module_block_view($delta = NULL) {
+  $block = array();
+  switch ($delta) {
+    case 'easy_module_generator':
+      require_once 'includes/easy_module.blocks.inc';
+      $block['subject'] = NULL;
+      $block['content'] = _easy_module_generation_page();
+      break;
+  }
   return $block;
 }
 
