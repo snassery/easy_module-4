@@ -73,4 +73,3 @@ function easy_module_block_view($delta = NULL) {
   }
   return $block;
 }
-}
